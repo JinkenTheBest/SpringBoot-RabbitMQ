@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: hello-world
+  rabbitmq:
+    #    默认账号密码
+    username: guest
+    password: guest
+    #    rabbitmq的ip
+    addresses: 127.0.0.1
+#    rabbitmq的端口，我这里是默认端口
+    port: 5672
+server:
+  port: 9000
