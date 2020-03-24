@@ -2,12 +2,19 @@ spring:
   application:
     name: hello-world
   rabbitmq:
-    #    Ĭ���˺�����
+    #    默认账号密码
     username: guest
     password: guest
-    #    rabbitmq��ip
+    #    rabbitmq的ip
     addresses: 127.0.0.1
-#    rabbitmq�Ķ˿ڣ���������Ĭ�϶˿�
+    #    rabbitmq的端口，我这里是默认端口
     port: 5672
+#    开启服务端（面包店）确认面包已经送出去了，这里有两种确认方式，先说returns
+    publisher-returns: true
+    listener:
+      simple:
+#        这里开启消费方（买面包的人）确认面包已经到手了
+        acknowledge-mode: manual
+    publisher-confirms: true
 server:
   port: 9000

@@ -1,11 +1,15 @@
 package com.jenkins.controller;
 
 import com.jenkins.config.AppConfig;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 public class Producer {
@@ -20,6 +24,4 @@ public class Producer {
         }
         return "OK";
     }
-
-
 }
