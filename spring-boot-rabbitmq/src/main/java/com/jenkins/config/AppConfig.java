@@ -40,6 +40,7 @@ public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMandatory(true);
+
         return rabbitTemplate;
     }
 
@@ -51,7 +52,7 @@ public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.
     @Override
     public void confirm(CorrelationData correlationData, boolean b, String s) {
         if (b){
-            System.out.println("面包到达了花里胡哨的展示柜");
+//            System.out.println("面包到达了花里胡哨的展示柜");
         }else {
             System.out.println("好嘛，面包丢了");
 

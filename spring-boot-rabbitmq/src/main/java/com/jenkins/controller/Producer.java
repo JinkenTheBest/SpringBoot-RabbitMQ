@@ -18,8 +18,14 @@ public class Producer {
 
     @GetMapping("/makeLover")
     public String makeLover(){
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
              String msg = "send msg = " + i;
+            try {
+                //每发一条消息睡一会会
+                Thread.sleep(i * 10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             template.convertAndSend(AppConfig.EXCHANGE_NAME,AppConfig.ROUTING_KEY,msg);
         }
         return "OK";
