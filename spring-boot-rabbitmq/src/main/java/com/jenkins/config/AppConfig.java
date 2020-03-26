@@ -46,15 +46,15 @@ public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.
 
     @Override
     public void returnedMessage(Message message, int i, String s, String s1, String s2) {
-        System.out.println("面包到达了窗口（可惜不是我家的，所以可以扣工资了）");
+        System.out.println("没有能够进入展示柜");
     }
 
     @Override
     public void confirm(CorrelationData correlationData, boolean b, String s) {
         if (b){
-//            System.out.println("面包到达了花里胡哨的展示柜");
+            System.out.println("面包到达了窗口（可惜不是我家的，所以可以扣工资了）");
         }else {
-            System.out.println("好嘛，面包丢了");
+            System.out.println("面包没有到达窗口");
 
         }
     }

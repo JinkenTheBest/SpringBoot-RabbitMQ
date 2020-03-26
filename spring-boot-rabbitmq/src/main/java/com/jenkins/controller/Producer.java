@@ -26,7 +26,7 @@ public class Producer {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            template.convertAndSend(AppConfig.EXCHANGE_NAME,AppConfig.ROUTING_KEY,msg);
+            template.convertAndSend(AppConfig.EXCHANGE_NAME,AppConfig.ROUTING_KEY+"0",msg);
         }
         return "OK";
     }
