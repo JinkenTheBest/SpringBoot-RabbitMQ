@@ -1,6 +1,10 @@
 package com.jenkins.controller;
 
 import com.jenkins.config.AppConfig;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.impl.AMQImpl;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,19 +18,19 @@ import java.util.UUID;
 @RestController
 public class Producer {
     @Autowired
-    RabbitTemplate template;
+    private RabbitTemplate template;
 
     @GetMapping("/makeLover")
-    public String makeLover(){
+    public String makeLover() {
         for (int i = 0; i < 50; i++) {
-             String msg = "send msg = " + i;
+            String msg = "send msg = " + i;
             try {
                 //每发一条消息睡一会会
                 Thread.sleep(i * 10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            template.convertAndSend(AppConfig.EXCHANGE_NAME,AppConfig.ROUTING_KEY+"0",msg);
+            template.convertAndSend(AppConfig.EXCHANGE_NAME, AppConfig.ROUTING_KEY, msg);
         }
         return "OK";
     }

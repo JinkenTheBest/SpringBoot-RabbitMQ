@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class Consumer {
     // tag代表投递的标识符，唯一标识了当前信道上的投递，通过 deliveryTag ，消费者就可以告诉 RabbitMQ 确认收到了当前消息
-    @RabbitListener(queues = AppConfig.QUEUE_NAME)
+//    @RabbitListener(queues = AppConfig.QUEUE_NAME)
     public void getLover(String msg, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) Long tag) throws IOException {
         //这里可以三个参数代表：
         //prefetchSize: 单条消息的大小限制，消费端通常设置为0，表示不做限制
@@ -35,7 +35,7 @@ public class Consumer {
         }
     }
 
-    @RabbitListener(queues = AppConfig.QUEUE_NAME)
+//    @RabbitListener(queues = AppConfig.QUEUE_NAME)
     public void getLover2(String msg, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) Long tag) throws IOException {
         channel.basicQos(0,1,true);
         try {

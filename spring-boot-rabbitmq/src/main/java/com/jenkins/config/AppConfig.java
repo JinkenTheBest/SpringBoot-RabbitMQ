@@ -8,11 +8,15 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
-public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.ConfirmCallback {
+public class AppConfig implements RabbitTemplate.ReturnCallback, RabbitTemplate.ConfirmCallback {
 
     @Autowired
     RabbitTemplate template;
@@ -21,26 +25,28 @@ public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.
     public final static String ROUTING_KEY = "helloWorldKey";
 
     @Bean
-    public Queue queue(){
-        return new Queue(QUEUE_NAME);
+    public Queue queue() {
+        Map map = new HashMap();
+        map.put("x-message-ttl", "3000");
+
+        return new Queue(QUEUE_NAME, true, false, false, map);
     }
 
     @Bean
-    public Binding binding(Queue queue , TopicExchange exchange){
+    public Binding binding(Queue queue, TopicExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY);
     }
 
     @Bean
-    public TopicExchange topiceExchang(){
-
-        return new TopicExchange(EXCHANGE_NAME);
+    public TopicExchange topiceExchang() {
+        TopicExchange topicExchange = new TopicExchange(EXCHANGE_NAME, true, false);
+        return topicExchange;
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMandatory(true);
-
         return rabbitTemplate;
     }
 
@@ -51,16 +57,16 @@ public class AppConfig implements RabbitTemplate.ReturnCallback ,RabbitTemplate.
 
     @Override
     public void confirm(CorrelationData correlationData, boolean b, String s) {
-        if (b){
-            System.out.println("面包到达了窗口（可惜不是我家的，所以可以扣工资了）");
-        }else {
+        if (b) {
+            System.out.println("面包到达了窗口");
+        } else {
             System.out.println("面包没有到达窗口");
 
         }
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         template.setConfirmCallback(this);
         template.setReturnCallback(this);
     }
