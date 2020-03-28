@@ -27,10 +27,32 @@ public class AppConfig implements RabbitTemplate.ReturnCallback, RabbitTemplate.
     @Bean
     public Queue queue() {
         Map map = new HashMap();
-        map.put("x-message-ttl", "3000");
+        map.put("x-message-ttl", 30000);
+        map.put("x-dead-letter-exchange", "dlx.exchange");
+        map.put("x-dead-letter-routing-key", "dlx.key");
 
         return new Queue(QUEUE_NAME, true, false, false, map);
     }
+
+    @Bean
+    public Queue deadQueue(){
+        Queue queue = new Queue("dead", true);
+        return queue;
+    }
+
+    @Bean
+    public Binding deadLetterBindding(){
+        return BindingBuilder.bind(deadQueue()).to(deadLetterExchange()).with("dlx.key");
+    }
+
+
+    @Bean
+    public DirectExchange deadLetterExchange() {
+        DirectExchange topicExchange = new DirectExchange("dlx.exchange", true, false);
+        return topicExchange;
+    }
+
+
 
     @Bean
     public Binding binding(Queue queue, TopicExchange exchange) {
